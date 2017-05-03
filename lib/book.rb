@@ -40,6 +40,12 @@ class Book
       end
     end
     found_book
- end
+  end
+
+  def update(attributes)
+    @title = attributes[:title]
+    @id = self.id
+    DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{@id};")
+  end
 
 end

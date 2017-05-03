@@ -57,10 +57,18 @@ describe Book do
    it("finds a book based off an id") do
      test_book = Book.new({:title => 'The Hatchet', :author => 'Gary Paulsen'})
      test_book.save
-     test_book2 = Book.new({:title => 'My Cool Book', :author => 'Cool Sara'})
+     test_book2 = Book.new({:title => 'My Cool Book, Niiiice', :author => 'Cool Sara'})
      test_book2.save
-     expect(Book.find(test_book.id)).to(eq(test_book))
+     expect(Book.find(test_book2.id)).to(eq(test_book2))
    end
  end
+ describe('#update') do
+    it("will update a bookin the db") do
+      book = Book.new({:title => "Bookin", :author => 'The DB', :genre => 'Update'})
+      book.save()
+      book.update({:title => "Bookin!"})
+      expect(book.title()).to(eq("Bookin!"))
+    end
+  end
 
 end
