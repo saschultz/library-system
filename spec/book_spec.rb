@@ -1,12 +1,19 @@
 require "spec_helper"
 
 describe Book do
+
+  describe("#==") do
+    it("is the same book if it shares a title and author") do
+      book1 = Book.new({:title => "Epicodus Stuff", :author => "Sean"})
+      book2 = Book.new({:title => "Epicodus Stuff", :author => "Sean"})
+      expect(book1 == book2).to(eq(true))
+    end
+  end
   describe(".all") do
     it("is empty at first") do
       expect(Book.all()).to(eq([]))
     end
   end
-
   describe("#title") do
     it("tells you its title") do
       book = Book.new({:title => 'Epicodus Stuff'})
@@ -25,5 +32,35 @@ describe Book do
       expect(book.genre).to(eq("Cookbook"))
     end
   end
+  describe("#checkout") do
+    it("tells you its checkout") do
+      book = Book.new({:genre => 'Cookbook'})
+      expect(book.checkout).to(eq(false))
+    end
+  end
+  describe("#save") do
+    it("lets you save books to the database") do
+      book = Book.new({:title => 'Epicodus Stuff', :author => 'Sean', :genre => 'Cookbook'})
+      book.save
+      # binding.pry
+      expect(Book.all).to(eq([book]))
+    end
+  end
+  describe("#id") do
+    it("returns the id of the book") do
+      book = Book.new({:title => 'Epicodus Stuff', :author => 'Sean', :genre => 'Cookbook'})
+      book.save
+      expect(book.id).to(be_an_instance_of(Integer))
+    end
+  end
+  describe('.find') do
+   it("finds a book based off an id") do
+     test_book = Book.new({:title => 'The Hatchet', :author => 'Gary Paulsen'})
+     test_book.save
+     test_book2 = Book.new({:title => 'My Cool Book', :author => 'Cool Sara'})
+     test_book2.save
+     expect(Book.find(test_book.id)).to(eq(test_book))
+   end
+ end
 
 end
