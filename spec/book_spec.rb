@@ -65,9 +65,9 @@ describe Book do
  describe('#update') do
     it("will update a bookin the db") do
       book = Book.new({:title => "Bookin", :author => 'The DB', :genre => 'Update'})
-      book.save()
+      book.save
       book.update({:title => "Bookin!"})
-      expect(book.title()).to(eq("Bookin!"))
+      expect(book.title).to(eq("Bookin!"))
     end
   end
   describe("#delete") do
@@ -77,7 +77,25 @@ describe Book do
       book2 = Book.new({:title => 'My Cool Book, Niiiice', :author => 'Cool Sara'})
       book2.save
       book.delete
-      expect(Book.all()).to(eq([book2]))
+      expect(Book.all).to(eq([book2]))
+    end
+  end
+  describe(".find_by") do
+    it("will find a book by type") do
+      book = Book.new({:title => "Bookin", :author => 'The DB', :genre => 'Fiction'})
+      book.save
+      book2 = Book.new({:title => 'My Cool Book, Niiiice', :author => 'Cool Sara', :genre => 'Fiction'})
+      book2.save
+      expect(Book.find_by('genre', 'Fiction')).to(eq([book, book2]))
+    end
+  end
+  describe(".find_by") do
+    it("will find a book by type") do
+      book = Book.new({:title => "Bookin", :author => 'The DB', :genre => 'Fiction'})
+      book.save
+      book2 = Book.new({:title => 'My Cool Book, Niiiice', :author => 'Cool Sara', :genre => 'Fiction'})
+      book2.save
+      expect(Book.find_by('title', 'Bookin')).to(eq([book]))
     end
   end
 

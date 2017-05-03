@@ -53,4 +53,17 @@ class Book
     DB.exec("DELETE FROM books WHERE id = #{@id};")
   end
 
+  def Book.find_by(field, value)
+    books = []
+    returned_books = DB.exec("SELECT * FROM books WHERE #{field} = '#{value}' ORDER BY #{field} DESC;")
+    returned_books.each do |book|
+      title = book['title']
+      author = book['author']
+      genre = book['genre']
+      id = book['id'].to_i
+      books.push(Book.new({:title => title, :author => author, :genre => genre, :id => id}))
+    end
+    books
+  end
+
 end
