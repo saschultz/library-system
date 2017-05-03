@@ -1,0 +1,6 @@
+form input,
+form label,
+form button {
+  display: block;
+  margin-bottom: 8px;
+}
