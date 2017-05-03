@@ -70,5 +70,15 @@ describe Book do
       expect(book.title()).to(eq("Bookin!"))
     end
   end
+  describe("#delete") do
+    it("lets you delete a book from th'db") do
+      book = Book.new({:title => "Bookin", :author => 'The DB', :genre => 'Update'})
+      book.save
+      book2 = Book.new({:title => 'My Cool Book, Niiiice', :author => 'Cool Sara'})
+      book2.save
+      book.delete
+      expect(Book.all()).to(eq([book2]))
+    end
+  end
 
 end
