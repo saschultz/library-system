@@ -1,6 +1,7 @@
 form input,
 form label,
-form button {
+form button,
+form select {
   display: block;
   margin-bottom: 8px;
 }

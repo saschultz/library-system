@@ -1,10 +1,26 @@
-<h3>Welcome <%=  @patron.name %></h3>
+<h1>Welcome <%=  @patron.name %></h1>
 
 <div class="row">
 
-  <div class="col-md-6">
-    <h5>Account Information:</h5>
+<!-- ___________________________Account info/ CRUD -->
+<!-- ___________________________Account info/ CRUD -->
+<!-- ___________________________Account info/ CRUD -->
 
+  <div class="col-md-6">
+    <h3>Account Information</h3>
+
+    <label>Checked out books:</label><br>
+    <% if @checked_out_books.any? %>
+    <ul>
+      <% @checked_out_books.each do |book| %>
+      <li><%= book.title %></li>
+      <% end %>
+    </ul>
+    <% else %>
+    <em>you have no books checked out</em>
+    <% end %>
+    <br>
+    <br>
     <form action="/<%= @patron.id %>/edit_patron" method="post">
       <input type="hidden" name="_method" value="patch">
       <label>Edit Name</label>
@@ -16,22 +32,36 @@
       <button type="submit">Cancel Membership</button>
     </form>
 
-
-    <!-- <form action="/add_patron" method="post">
-      <label>Title</label>
-      <input type="text" name="title">
-      <label>Author</label>
-      <input type="text" name="author">
-      <label>Genre</label>
-      <input type="text" name="genre">
-      <button type="submit">Add book</button>
-    </form> -->
-
   </div>
 
-  <div class="col-md-6">
-    <h5>Checkout:</h5>
+<!-- ________________________Checkout info/ search -->
+<!-- ________________________Checkout info/ search -->
+<!-- ________________________Checkout info/ search -->
 
+
+  <div class="col-md-6">
+    <h3>Checkout a Book</h3>
+
+    <form action="/<%= @patron.id %>/search" method="get">
+      <label>Search by:</label>
+      <select name="type">
+        <option value="title">title</option>
+        <option value="author">author</option>
+        <option value="genre">genre</option>
+      </select>
+      <input type="text" name="value">
+      <button type="submit">Search</button>
+    </form>
+
+    <% if @results.any? %>
+    <ul>
+      <% @results.each do |result| %>
+        <li><%= result.title %></li>
+      <% end %>
+    </ul>
+    <% else %>
+    <em>your search returned no results</em>
+    <% end %>
 
   </div>
 </div>

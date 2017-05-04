@@ -36,6 +36,15 @@ end
 
 get '/patron/:id' do
   @patron = Patron.find(params.fetch("id").to_i)
+  @results = []
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i}")
+  erb :patron_interface
+end
+
+get '/:id/search' do
+  @patron = Patron.find(params.fetch("id").to_i)
+  @results = Book.find_by(params.fetch('type'), params.fetch('value'))
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch('id').to_i}")
   erb :patron_interface
 end
 
@@ -43,6 +52,8 @@ patch '/:id/edit_patron' do
   @patron = Patron.find(params.fetch("id").to_i)
   name = params.fetch('name')
   @patron.update({:name => name})
+  @results = []
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i}")
   erb :patron_interface
 end
 
