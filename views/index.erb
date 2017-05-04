@@ -1,23 +1,6 @@
-<h1>Library</h1>
+<h1>Welcome to th Epicodus Public Library</h1>
 
-<% if @books.any? %>
-  <ul>
-    <% @books.each do |book| %>
-    <li><%= book.title %>, <%= book.author %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <em>your library is empty</em>
-<% end %>
 
-<hr>
-
-<form action="/add_book" method="post">
-  <label>Title</label>
-  <input type="text" name="title">
-  <label>Author</label>
-  <input type="text" name="author">
-  <label>Genre</label>
-  <input type="text" name="genre">
-  <button type="submit">Add book</button>
-</form>
+<h3>Log into the online portal</h3>
+I am a <a href="/librarian">Librarian</a><br>
+I am a <a href="/patron">Patron</a>

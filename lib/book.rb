@@ -64,6 +64,7 @@ class Book
   end
 
   def delete
+    DB.exec("DELETE FROM checkouts WHERE book_id = #{self.id};")
     DB.exec("DELETE FROM books WHERE id = #{self.id};")
   end
 

@@ -38,6 +38,27 @@ describe(Patron) do
       patron1.update({:name => "Janet Jackson"})
       expect(patron1.name).to(eq("Janet Jackson"))
     end
+    it 'lets you add a book to a patron' do
+      book = Book.new({:title => "Goosebumps", :author => "Sean?", :genre => 'Children'})
+      book.save
+      patron = Patron.new({:name => "Randy Jackson"})
+      patron.save
+      patron.update({:book_id => [book.id]})
+      expect(patron.books).to(eq([book]))
+    end
+  end
+
+  describe '#books' do
+    it 'returns all the books of a particular patron has checked out' do
+      book = Book.new({:title => "Goosebumps", :genre => 'Children'})
+      book.save
+      patron = Patron.new({:name => "Randy Jackson"})
+      patron.save
+      book2 = Book.new({:title => "Catcher in the Rye", :genre => 'Fiction'})
+      book2.save
+      patron.update({:book_id => [book.id]})
+      patron.update({:book_id => [book2.id]})
+    end
   end
 
   describe("#delete") do

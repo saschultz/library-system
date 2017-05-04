@@ -30,9 +30,28 @@ class Patron
   def update(attributes)
     @name = attributes[:name]
     DB.exec("UPDATE patrons SET name = '#{@name}' WHERE id = #{self.id};")
+
+    attributes.fetch(:book_id, []).each do |book_id|
+      DB.exec("INSERT INTO checkouts (patron_id, book_id) VALUES (#{self.id}, #{book_id});")
+    end
+  end
+
+  def books
+    patron_books = []
+    results = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{self.id};")
+    results.each do |result|
+      book_id = result.fetch('book_id').to_i
+      book = DB.exec("SELECT * FROM books WHERE id = #{book_id};")
+      book_title = book.first.fetch('title')
+      book_author = book.first.fetch('author')
+      book_genre = book.first.fetch('genre')
+      patron_books.push(Book.new({:title => book_title, :author => book_author, :genre => book_genre, :id => book_id}))
+    end
+    patron_books
   end
 
   def delete
+    DB.exec("DELETE FROM checkouts WHERE patron_id = #{self.id};")
     DB.exec("DELETE FROM patrons WHERE id = #{self.id};")
   end
 

@@ -1,0 +1,31 @@
+<h1>Library catalog:</h1>
+<div class="row">
+
+  <div class="col-md-6">
+
+    <form action="/add_book" method="post">
+      <label>Title</label>
+      <input type="text" name="title">
+      <label>Author</label>
+      <input type="text" name="author">
+      <label>Genre</label>
+      <input type="text" name="genre">
+      <button type="submit">Add book</button>
+    </form>
+
+  </div>
+
+  <div class="col-md-6">
+
+    <% if @books.any? %>
+      <ul>
+        <% @books.each do |book| %>
+        <li><a href="/catalog/<%= book.id %>"><%= book.title %></a>, <em><%= book.author %></em> (checked out: <%= book.checkout %>)</li>
+        <% end %>
+      </ul>
+    <% else %>
+      <em>your library is empty</em>
+    <% end %>
+  </div>
+
+</div>
