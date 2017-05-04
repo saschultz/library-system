@@ -1,0 +1,9 @@
+<% if @patrons.any? %>
+  <ul>
+    <% @patrons.each do |patron| %>
+    <li><a href="/patron/<%= patron.id %>"><%= patron.name %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <em>there are no existing memebers</em>
+<% end %>

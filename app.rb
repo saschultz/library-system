@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require './lib/book'
+require './lib/patron'
 require 'pry'
 require 'pg'
 
@@ -17,12 +18,27 @@ get("/librarian") do
   erb(:librarian)
 end
 
+get '/patron' do
+  erb :patron
+end
+
+post '/add_patron' do
+  name = params.fetch('name')
+  Patron.new({:name => name}).save
+  @patrons = Patron.all
+  erb :patron_list
+end
+
+get '/patron_list' do
+  @patrons = Patron.all
+  erb :patron_list
+end
+
 post("/add_book") do
   title = params.fetch('title')
   author = params.fetch('author')
   genre = params.fetch('genre')
-  book = Book.new({:title => title, :author => author, :genre => genre})
-  book.save
+  Book.new({:title => title, :author => author, :genre => genre}).save
   @books = Book.all
   erb(:librarian)
 end
