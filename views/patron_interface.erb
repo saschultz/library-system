@@ -11,13 +11,18 @@
 
     <label>Checked out books:</label><br>
     <% if @checked_out_books.any? %>
-    <ul>
-      <% @checked_out_books.each do |book| %>
-      <li><% test_book = Book.find(book.fetch('book_id').to_i) %>
+    <form action="/<%= @patron.id %>/return" method="post">
+      <input type="hidden" name="_method" value="delete">
+      <ul class="results">
+        <% @checked_out_books.each do |book| %>
+        <li><% test_book = Book.find(book.fetch('book_id').to_i) %>
+          <input type="checkbox" name="return[]" value="<%= test_book.id %>">
           <%= test_book.title %>
-      </li>
-      <% end %>
-    </ul>
+        </li>
+        <% end %>
+      </ul>
+      <button type="submit">Return Book(s)</button>
+    </form>
     <% else %>
     <em>you have no books checked out</em>
     <% end %>

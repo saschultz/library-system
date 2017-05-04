@@ -62,6 +62,19 @@ post '/:id/checkout' do
   erb :patron_interface
 end
 
+delete '/:id/return' do
+  @patron = Patron.find(params.fetch("id").to_i)
+  @patron_id = params.fetch("id").to_i
+  @results = []
+  @return_selected = params.fetch("return")
+  @return_selected.each do |selected|
+    @book_id = selected.to_i
+    DB.exec("DELETE FROM checkouts WHERE book_id = #{@book_id};")
+  end
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i};")
+  erb :patron_interface
+end
+
 patch '/:id/edit_patron' do
   @patron = Patron.find(params.fetch("id").to_i)
   name = params.fetch('name')
