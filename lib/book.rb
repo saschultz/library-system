@@ -70,7 +70,7 @@ class Book
 
   def Book.find_by(field, value)
     books = []
-    returned_books = DB.exec("SELECT * FROM books WHERE #{field} = '#{value}' ORDER BY #{field} DESC;")
+    returned_books = DB.exec("SELECT * FROM books WHERE LOWER(#{field}) LIKE LOWER('#{value}%') ORDER BY #{field} DESC;")
     returned_books.each do |book|
       title = book['title']
       author = book['author']

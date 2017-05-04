@@ -65,9 +65,10 @@
     <form action="/<%= @patron.id %>/checkout" method="post">
       <ul class="results">
         <% @results.each do |result| %>
+          <% if result.checkout == false %>
           <li><input type="checkbox" name="checkout[]" value="<%= result.id %>">
-            <%= result.title %><% if result.checkout == false %>
-            <% end %>
+            <%= result.title %>
+          <% end %>
           </li>
         <% end %>
       </ul>
