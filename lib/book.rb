@@ -42,15 +42,29 @@ class Book
     found_book
   end
 
+  def patrons
+    book_patrons = []
+    results = DB.exec("SELECT patron_id FROM checkouts WHERE book_id = #{self.id};")
+    results.each do |result|
+      patron_id = result.fetch('patron_id').to_i
+      patron = DB.exec("SELECT * FROM patrons WHERE id = #{patron_id};")
+      patron_name = patron.first.fetch('name')
+      book_patrons.push(Patron.new({:name => patron_name, :id => patron_id}))
+    end
+    book_patrons
+  end
+
   def update(attributes)
     @title = attributes[:title]
-    @id = self.id
-    DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{@id};")
+    DB.exec("UPDATE books SET title = '#{@title}' WHERE id = #{self.id};")
+
+    attributes.fetch(:patron_id, []).each do |patron_id|
+      DB.exec("INSERT INTO checkouts (patron_id, book_id) VALUES (#{patron_id}, #{self.id});")
+    end
   end
 
   def delete
-    @id = self.id
-    DB.exec("DELETE FROM books WHERE id = #{@id};")
+    DB.exec("DELETE FROM books WHERE id = #{self.id};")
   end
 
   def Book.find_by(field, value)

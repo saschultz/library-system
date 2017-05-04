@@ -69,7 +69,31 @@ describe Book do
       book.update({:title => "Bookin!"})
       expect(book.title).to(eq("Bookin!"))
     end
+    it("lets you add an patron to a book's checkout herstory") do
+      book = Book.new({:title => "Goosebumps", :genre => 'Children'})
+      book.save
+      patron = Patron.new({:name => 'Sara'})
+      patron2 = Patron.new({:name => 'Brad Pitt'})
+      patron.save
+      patron2.save
+      book.update({:patron_id => [patron.id, patron2.id]})
+      expect(book.patrons).to(eq([patron, patron2]))
+    end
   end
+
+  describe("#patrons") do
+    it("returns all the patrons who have checked out a particular book") do
+      book = Book.new({:title => "Goosebumps", :genre => 'Children'})
+      book.save
+      patron = Patron.new({:name => 'Sara'})
+      patron2 = Patron.new({:name => 'Brad Pitt'})
+      patron.save
+      patron2.save
+      book.update({:patron_id => [patron.id, patron2.id]})
+      expect(book.patrons).to(eq([patron, patron2]))
+    end
+  end
+
   describe("#delete") do
     it("lets you delete a book from th'db") do
       book = Book.new({:title => "Bookin", :author => 'The DB', :genre => 'Update'})
