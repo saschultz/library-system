@@ -37,6 +37,12 @@ patch '/:id/edit_book' do
   title = params.fetch('title')
   book.update({:title => title})
   @books = Book.all
+  erb :librarian
+end
 
+delete '/:id/edit_book' do
+  book = Book.find(params.fetch("id").to_i)
+  book.delete
+  @books = Book.all
   erb :librarian
 end
