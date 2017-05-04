@@ -37,14 +37,28 @@ end
 get '/patron/:id' do
   @patron = Patron.find(params.fetch("id").to_i)
   @results = []
-  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i}")
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i};")
   erb :patron_interface
 end
 
 get '/:id/search' do
+
   @patron = Patron.find(params.fetch("id").to_i)
   @results = Book.find_by(params.fetch('type'), params.fetch('value'))
-  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch('id').to_i}")
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch('id').to_i};")
+  erb :patron_interface
+end
+
+post '/:id/checkout' do
+  @patron = Patron.find(params.fetch("id").to_i)
+  @patron_id = params.fetch("id").to_i
+  @results = []
+  @checkout_selected = params.fetch("checkout")
+  @checkout_selected.each do |selected|
+    @book_id = selected.to_i
+    DB.exec("INSERT INTO checkouts (patron_id, book_id) VALUES (#{@patron_id}, #{@book_id});")
+  end
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i};")
   erb :patron_interface
 end
 
@@ -53,7 +67,7 @@ patch '/:id/edit_patron' do
   name = params.fetch('name')
   @patron.update({:name => name})
   @results = []
-  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i}")
+  @checked_out_books = DB.exec("SELECT book_id FROM checkouts WHERE patron_id = #{params.fetch("id").to_i};")
   erb :patron_interface
 end
 

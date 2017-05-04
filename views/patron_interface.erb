@@ -13,7 +13,9 @@
     <% if @checked_out_books.any? %>
     <ul>
       <% @checked_out_books.each do |book| %>
-      <li><%= book.title %></li>
+      <li><% test_book = Book.find(book.fetch('book_id').to_i) %>
+          <%= test_book.title %>
+      </li>
       <% end %>
     </ul>
     <% else %>
@@ -54,11 +56,18 @@
     </form>
 
     <% if @results.any? %>
-    <ul>
-      <% @results.each do |result| %>
-        <li><%= result.title %></li>
-      <% end %>
-    </ul>
+    <hr>
+    <form action="/<%= @patron.id %>/checkout" method="post">
+      <ul class="results">
+        <% @results.each do |result| %>
+          <li><input type="checkbox" name="checkout[]" value="<%= result.id %>">
+            <%= result.title %><% if result.checkout == false %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <button type="submit">Checkout Book(s)</button>
+    </form>
     <% else %>
     <em>your search returned no results</em>
     <% end %>

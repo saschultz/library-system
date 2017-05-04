@@ -5,3 +5,11 @@ form select {
   display: block;
   margin-bottom: 8px;
 }
+input[type='checkbox'] {
+  margin-right: 8px;
+  display: inline;
+}
+.results {
+  list-style: none;
+  padding: 0;
+}
