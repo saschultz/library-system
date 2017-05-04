@@ -27,6 +27,16 @@ class Patron
     @id = result.first.fetch("id").to_i
   end
 
+  def Patron.find(input)
+    found_patron = nil
+    Patron.all.each do |patron|
+      if patron.id == input
+        found_patron = patron
+      end
+    end
+    found_patron
+  end
+
   def update(attributes)
     @name = attributes[:name]
     DB.exec("UPDATE patrons SET name = '#{@name}' WHERE id = #{self.id};")

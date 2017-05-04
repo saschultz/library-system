@@ -1,9 +1,14 @@
+<h1>Select your name</h1>
+
 <% if @patrons.any? %>
   <ul>
     <% @patrons.each do |patron| %>
     <li><a href="/patron/<%= patron.id %>"><%= patron.name %></a></li>
     <% end %>
   </ul>
+  <hr>
+  <a href="/patron">I'm not a member</a>
 <% else %>
-  <em>there are no existing memebers</em>
+  <em>there are no existing memebers</em><br>
+  <a href="/patron">Create an account</a>
 <% end %>

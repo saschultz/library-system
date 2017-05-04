@@ -34,6 +34,25 @@ get '/patron_list' do
   erb :patron_list
 end
 
+get '/patron/:id' do
+  @patron = Patron.find(params.fetch("id").to_i)
+  erb :patron_interface
+end
+
+patch '/:id/edit_patron' do
+  @patron = Patron.find(params.fetch("id").to_i)
+  name = params.fetch('name')
+  @patron.update({:name => name})
+  erb :patron_interface
+end
+
+delete '/:id/edit_patron' do
+  @patron = Patron.find(params.fetch("id").to_i)
+  @patron.delete
+  @patrons = Patron.all
+  erb :patron_list
+end
+
 post("/add_book") do
   title = params.fetch('title')
   author = params.fetch('author')
